@@ -26,7 +26,7 @@ router.get('/', async function (req, res, next) {
     if (!base_url) {
         base_url = "";
     }
-    if (!limit || limit <= 0) {
+    if (!limit || limit === 0) {
         limit = 5;
     }
     if (query.length < 3) {
@@ -70,12 +70,14 @@ router.get('/', async function (req, res, next) {
     let results = index.search(query);
     let returned = [];
     for (let index in results) {
-        if (limit > 0) {
-            limit--;
+        if (limit > 0 || limit === -1) {
+            if (limit !== -1) {
+                limit--;
+            }
             let doc = documents[results[index].ref];
             doc.location = `${base_url ? base_url + "/" : ""}${doc.location}`;
             returned.push(doc);
-        }else{
+        } else {
             break;
         }
     }
