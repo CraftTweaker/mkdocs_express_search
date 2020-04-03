@@ -70,8 +70,8 @@ router.get('/', async function (req, res, next) {
     let results = index.search(query);
     let returned = [];
     for (let index in results) {
-        if (limit > 0 || limit === -1) {
-            if (limit !== -1) {
+        if (limit > 0 || limit == -1) {
+            if (limit != -1) {
                 limit--;
             }
             let doc = documents[results[index].ref];
