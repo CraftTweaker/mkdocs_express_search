@@ -82,7 +82,7 @@ router.get('/', async function (req, res, next) {
         }
     }
 
-    res.send(returned);
+    res.send({count: returned.length, totalCount: results.length, results: returned});
 });
 
 module.exports = router;
