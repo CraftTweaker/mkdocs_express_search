@@ -28,7 +28,7 @@ router.get('/', async function (req, res, next) {
         res.status(400).send({error: "Minimum search query is 3 characters!"});
     }
     // TODO maybe send a request to index.php to ensure that this actually exists first.
-    let data = await axios.get(`https://docs.blamejared.com/${version}/${lang}/mkdocs/search_index.json`, {}).then(value => Promise.resolve({
+    let data = await axios.get(`https://docs.blamejared.com/${version}/${lang}/search/search_index.json`, {}).then(value => Promise.resolve({
         error: false,
         data: value.data
     })).catch(reason => Promise.resolve({
