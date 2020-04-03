@@ -8,21 +8,26 @@ router.get('/', async function (req, res, next) {
     let lang = req.query["lang"];
     let query = req.query["q"];
     let base_url = req.query["base_url"];
+    let limit = req.query["limit"];
     if (!version || !lang || !query) {
         res.status(400).send({
-            message: "Requires version (v), language (lang) and query (q), base_url (base_url) (optional)",
-            example: "?v=1.12&lang=en&q=item&base_url=../..",
+            message: "Requires version (v), language (lang) and query (q), base_url (base_url) (optional), limit (limit) (optional)",
+            example: "?v=1.12&lang=en&q=item&base_url=../..?limit=5",
             given: {
                 version: `${version}`,
                 lang: `${lang}`,
                 query: `${query}`,
-                base_url: `${base_url}`
+                base_url: `${base_url}`,
+                limit: `${limit}`
             }
         });
         return;
     }
     if (!base_url) {
         base_url = "";
+    }
+    if (!limit || limit <= 0) {
+        limit = 5;
     }
     if (query.length < 3) {
         res.status(400).send({error: "Minimum search query is 3 characters!"});
@@ -65,9 +70,14 @@ router.get('/', async function (req, res, next) {
     let results = index.search(query);
     let returned = [];
     for (let index in results) {
-        let doc = documents[results[index].ref];
-        doc.location = `${base_url ? base_url + "/" : ""}${doc.location}`;
-        returned.push(doc);
+        if (limit > 0) {
+            limit--;
+            let doc = documents[results[index].ref];
+            doc.location = `${base_url ? base_url + "/" : ""}${doc.location}`;
+            returned.push(doc);
+        }else{
+            break;
+        }
     }
 
     res.send(returned);
