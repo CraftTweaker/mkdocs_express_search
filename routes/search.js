@@ -12,7 +12,7 @@ router.get('/', async function (req, res, next) {
     if (!version || !lang || !query) {
         res.status(400).send({
             message: "Requires version (v), language (lang) and query (q), base_url (base_url) (optional), limit (limit) (optional)",
-            example: "?v=1.12&lang=en&q=item&base_url=../..?limit=5",
+            example: "?v=1.12&lang=en&q=item&base_url=../..&limit=5",
             given: {
                 version: `${version}`,
                 lang: `${lang}`,
